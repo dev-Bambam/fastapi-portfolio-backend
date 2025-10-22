@@ -1,0 +1,11 @@
+.env
+.penv
+
+*.db
+*.sqlite
+*.sqlite3
+
+pycache/
+*.pyc
+*.o
+tests/
