@@ -1,22 +1,24 @@
-from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, status
-from fastapi.exceptions import HTTPException
-from jose import jwt 
 from core.config import settings
+from fastapi.exceptions import HTTPException
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 
-oauth2_scheme = OAuth2PasswordBearer('/token')
+from fastapi import Depends, status
 
-def get_current_user(token:str = Depends(oauth2_scheme)):
-    payload = jwt.decode(
-        token,
-        settings.JWT_SECRETKEY,
-        settings.JWT_ALGORITHM
+oauth2_scheme = OAuth2PasswordBearer("/admin/token")
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    TOKEN_EXCEPTION = HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN, 
+        detail="Invalid user"
     )
-    username = payload.get('sub')
-    if username == settings.ADMIN_USERNAME:
-        return username
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Acess denied'
-        )
+
+    try:
+        payload = jwt.decode(token, settings.JWT_SECRETKEY, settings.JWT_ALGORITHM)
+        admin = payload.get("sub", "")
+        if admin is not settings.ADMIN_USERNAME:
+            raise TOKEN_EXCEPTION
+    except JWTError:
+        raise TOKEN_EXCEPTION
+    
+    return admin

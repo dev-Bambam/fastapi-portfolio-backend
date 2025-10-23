@@ -1,10 +1,12 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
+# from fastapi.security import OAuth2PasswordRequestForm
 from core.config import settings
 from .auth_schema import (
     LoginData,
     LoginResponse
 )
 from .auth_utils import get_token
+from .auth_dependencies import get_current_user
 
 router = APIRouter(prefix='/admin', tags=['Auth'])
 
@@ -24,4 +26,10 @@ async def admin_login(login_data:LoginData):
 
     return {
         'token': token
+    }
+
+@router.get('/me', dependencies=[Depends(get_current_user)],)
+async def return_me():
+    return {
+        'name': 'I am Bambam'
     }
