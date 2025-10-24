@@ -1,45 +1,46 @@
-from sqlalchemy import Column, String, JSON
+from sqlalchemy import String, JSON, Integer
+from sqlalchemy.orm import mapped_column, Mapped
 from core.db import Base
 from .profile_schemas import SocialLink
 
 class Profile(Base):
     __tablename__ = 'profile'
 
-    id: int | None = Column(
+    id: Mapped[int] = mapped_column(
         'id',
-        String,
+        Integer,
         primary_key=True,
         default = 1,
         index=True
     )
 
-    full_name: str = Column(
+    full_name: Mapped[str] = mapped_column(
         String(128),
         nullable=False,
     )
 
-    nickname: str = Column(
+    nickname: Mapped[str] = mapped_column(
         String(128),
         nullable=False,
     )
 
-    professional_title: str = Column(
+    professional_title: Mapped[str] = mapped_column(
         String(128),
         nullable=False
     )
 
-    bio: str = Column(
+    bio: Mapped[str] = mapped_column(
         String(2048),
         nullable=False
     )
 
-    email:str = Column(
+    email:Mapped[str] = mapped_column(
         String(256),
         nullable=False,
         unique= True
     )
 
-    social_links: list[SocialLink] = Column(
+    social_links: Mapped[list[SocialLink]] = mapped_column(
         JSON,
         nullable=False
     )
