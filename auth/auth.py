@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-# from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 from core.config import settings
 from .auth_schema import (
-    LoginData,
+    #LoginData,
     LoginResponse
 )
 from .auth_utils import get_token
@@ -11,7 +11,7 @@ from .auth_dependencies import get_current_user
 router = APIRouter(prefix='/admin', tags=['Auth'])
 
 @router.post('/token', response_model=LoginResponse)
-async def admin_login(login_data:LoginData):
+async def admin_login(login_data:OAuth2PasswordRequestForm = Depends()):
     username = login_data.username
     password = login_data.password
 
@@ -25,7 +25,8 @@ async def admin_login(login_data:LoginData):
     token = get_token(payload)
 
     return {
-        'token': token
+        'access_token': token,
+        'token_type': 'bearer'
     }
 
 @router.get('/me', dependencies=[Depends(get_current_user)],)

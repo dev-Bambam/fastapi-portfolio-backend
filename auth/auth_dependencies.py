@@ -14,11 +14,24 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     )
 
     try:
-        payload = jwt.decode(token, settings.JWT_SECRETKEY, settings.JWT_ALGORITHM)
-        admin = payload.get("sub", "")
-        if admin is not settings.ADMIN_USERNAME:
+        payload = jwt.decode(
+            token,
+            settings.JWT_SECRETKEY,
+            algorithms=[settings.JWT_ALGORITHM]
+        )
+
+        admin_username: str = payload.get('sub')
+        if not admin_username:
+            print('coming from first if')
             raise TOKEN_EXCEPTION
-    except JWTError:
+        
+        if admin_username != settings.ADMIN_USERNAME:
+            print('coming from 2nd if')
+            raise TOKEN_EXCEPTION
+        
+    except JWTError as e:
+        print(f'this is jwt error: {e} and here is the token:{token}')
         raise TOKEN_EXCEPTION
     
-    return admin
+    return admin_username
+    

@@ -1,10 +1,11 @@
 from pydantic import BaseModel
 
-class User(BaseModel):
-    username:str
-
-class LoginData(User):
+# Simplified Login Data - Defines the expected input JSON structure
+class LoginData(BaseModel):
+    username: str
     password: str
 
+# Schema for the JWT response
 class LoginResponse(BaseModel):
-    token:str
+    access_token: str
+    token_type: str = 'bearer'
