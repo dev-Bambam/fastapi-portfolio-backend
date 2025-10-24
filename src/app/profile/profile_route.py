@@ -4,7 +4,7 @@ from .profile_service import create_or_update_profile, get_profile_service
 from sqlalchemy.orm import Session
 from core.db import get_db
 
-router = APIRouter(prefix='/profile', tags=['Admin','Profile'])
+router = APIRouter(prefix='/profile', )
 
 @router.post('/', response_model=ProfileRead)
 async def create_profile(profile_data:ProfileBase, db:Session = Depends(get_db)):
