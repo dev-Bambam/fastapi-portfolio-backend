@@ -1,12 +1,13 @@
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, UUID
 from core.db import Base
+from uuid import uuid4
 
 class Skill(Base):
     __tablename__ = 'skill'
 
-    id:Mapped[int] = mapped_column(
-        Integer,
+    id:Mapped[uuid4] = mapped_column(
+        UUID,
         primary_key=True,
         index=True
     )

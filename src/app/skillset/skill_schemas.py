@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, UUID4
 
 class SkillBase(BaseModel):
     name: str = Field(
@@ -31,7 +31,7 @@ class SkillUpdate(BaseModel):
     category: str|None = Field(None, max_length=64)
 
 class SkillRead(SkillBase):
-    id: int
+    id: UUID4
 
     class Config:
         from_attributes = True
