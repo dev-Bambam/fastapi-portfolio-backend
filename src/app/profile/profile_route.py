@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from .profile_schemas import ProfileRead, ProfileBase, ProfileUpdate
 from .profile_service import create_or_update_profile, get_profile_service
 from sqlalchemy.orm import Session
@@ -19,9 +19,5 @@ async def update_profile(profile_data: ProfileUpdate, db:Session = Depends(get_d
 @router.get('/', response_model=ProfileRead)
 async def retrieve_profile(db:Session = Depends(get_db)):
     profile = get_profile_service(db)
-    if not profile:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='Profile not found'
-        )
+   
     return profile

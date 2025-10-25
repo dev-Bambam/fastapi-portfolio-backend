@@ -5,10 +5,10 @@ class BaseError(Exception):
         self.detail = detail
         self.is_operational = is_operational
 
-        super.__init__(self.detail)
+        super().__init__(self.detail)
 
 class NotFoundError(BaseError):
-    def __init__(self,  detail):
+    def __init__(self,  detail:str):
         super().__init__(
             status_code=404,
             type= 'RESOURCE_NOT_FOUND_ERR',

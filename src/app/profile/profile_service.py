@@ -1,6 +1,7 @@
 from .profile_repo import create_profile, update_profile, get_profile
 from sqlalchemy.orm import Session
 from .profile_schemas import ProfileBase, ProfileUpdate
+from src.utils.error.errors import NotFoundError
 
 def create_or_update_profile(db:Session, profile_data: ProfileBase) -> ProfileBase:
     existing_profile = get_profile(db)
@@ -16,7 +17,7 @@ def create_or_update_profile(db:Session, profile_data: ProfileBase) -> ProfileBa
 
 def get_profile_service(db:Session):
     profile = get_profile(db)
-    # if not profile:
-    #     return  Exception('profile not found')
+    if not profile:
+        raise NotFoundError('profile not found')
     
     return profile
