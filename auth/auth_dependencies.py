@@ -5,7 +5,7 @@ from jose import JWTError, jwt
 
 from fastapi import Depends, status
 
-oauth2_scheme = OAuth2PasswordBearer("/admin/token")
+oauth2_scheme = OAuth2PasswordBearer("/api/v1/admin/token")
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
     TOKEN_EXCEPTION = HTTPException(

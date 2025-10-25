@@ -16,7 +16,7 @@ def create_or_update_profile(db:Session, profile_data: ProfileBase) -> ProfileBa
 
 def get_profile_service(db:Session):
     profile = get_profile(db)
-    if not profile:
-        raise Exception('profile not found')
+    # if not profile:
+    #     return  Exception('profile not found')
     
     return profile
