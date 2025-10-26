@@ -14,9 +14,37 @@ async def create_project(db:Session, project_data:dict) -> Project:
         return new_project
     except IntegrityError as e:
         db.rollback()
-        raise e
+        return e
     except SQLAlchemyError as e:
         db.rollback()
-        raise e
+        return e
     
-async def 
+async def get_project_by_id(db:Session, id) -> Project | None :
+    stmt = select(Project).where(Project.id == id).filter_by(not Project.is_deleted)
+    project = db.scalars(stmt)
+
+    return project
+
+async def get_projects(db:Session) -> list[Project] | None:
+    stmt = select(Project).order_by(-Project.created_at).filter_by(not Project.is_deleted)
+    projects = db.scalars(stmt).all()
+
+    return projects
+
+async def update_project(db:Session, project_data:dict) -> Project:
+    try:
+        db.add(project_data)
+        db.commit()
+        db.refresh(project_data)
+
+        return project_data
+    except SQLAlchemyError as e:
+        db.rollback()
+        return e
+    except IntegrityError as e:
+        db.rollback()
+        return e
+    
+async def delete_project(db:Session, project:Project) -> bool:
+    Project.is_deleted = True
+    return True

@@ -31,7 +31,7 @@ async def update_skill(db:Session, skill_data:dict):
         raise e
     
 async def get_skills(db:Session):
-    stmt = select(Skill)
+    stmt = select(Skill).order_by(- Skill.created_at)
     skills = db.scalars(stmt).all()
     
     return skills

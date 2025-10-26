@@ -3,7 +3,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Text, Enum as SQLEnum, JSON, UUID, DateTime
+from sqlalchemy import String, Text, Enum as SQLEnum, JSON, UUID, DateTime, Boolean
 
 
 from core.db import Base
@@ -57,5 +57,9 @@ class Project(Base):
         default= datetime.now()
     )
 
+    is_deleted: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False
+    )
     def __repr__(self):
         return f"Skill(id={self.id}, name={self.title}"

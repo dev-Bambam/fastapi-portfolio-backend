@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Depends
 from auth.auth_dependencies import get_current_user
-from src.app.profile.profile_route import router as profile_route
-from src.app.skillset.skill_route import router as skill_route
+
+from src.app.profile.profile_route import router as profile_router
+from src.app.skillset.skill_route import router as skill_router
+from src.app.project.project_route import router as project_router
 
 router = APIRouter(prefix='/admin', tags=['Admin'], dependencies=[Depends(get_current_user)])
 
-router.include_router(router=profile_route,)
-router.include_router(router=skill_route,)
+router.include_router(router=profile_router,)
+router.include_router(router=skill_router,)
+router.include_router(router=project_router,)
