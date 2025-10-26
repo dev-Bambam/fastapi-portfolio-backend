@@ -14,3 +14,11 @@ class NotFoundError(BaseError):
             type= 'RESOURCE_NOT_FOUND_ERR',
             detail=detail
         )
+
+class SQLAlchemyError(BaseError):
+    def __init__(self, detail):
+        super().__init__(
+            status_code = 400, 
+            type ='SQLAlchemy_ERR', 
+            detail = detail, 
+        )

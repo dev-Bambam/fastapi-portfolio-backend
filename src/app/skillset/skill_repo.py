@@ -3,7 +3,7 @@ from .skill_model import Skill
 from sqlalchemy import select, delete
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
-def create_skill(db:Session, skill_data:dict):
+async def create_skill(db:Session, skill_data:dict):
     new_skill = Skill(**skill_data)
     try:
         db.add(new_skill)
@@ -17,7 +17,7 @@ def create_skill(db:Session, skill_data:dict):
         db.rollback()
         raise e
     
-def update_skill(db:Session, skill_data:dict):
+async def update_skill(db:Session, skill_data:dict):
     try:
         db.add(skill_data)
         db.commit()
@@ -30,19 +30,19 @@ def update_skill(db:Session, skill_data:dict):
         db.rollback()
         raise e
     
-def get_skills(db:Session):
+async def get_skills(db:Session):
     stmt = select(Skill)
     skills = db.scalars(stmt).all()
     
     return skills
 
-def get_skill_by_id(db:Session, id):
+async def get_skill_by_id(db:Session, id):
     stmt = select(Skill).where(Skill.id == id)
     skill = db.scalar(stmt)
 
     return skill
 
-def delete_skill(db:Session, id):
+async def delete_skill(db:Session, id) -> bool:
     stmt = delete(Skill).where(Skill.id == id)
     try:
         result = db.execute(stmt)
