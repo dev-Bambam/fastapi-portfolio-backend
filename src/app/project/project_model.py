@@ -42,8 +42,8 @@ class Project(Base):
     
     # URLs
     github_url: Mapped[str] = mapped_column(String(512), nullable=False)
-    docs_url: Mapped[str] | None = mapped_column(String(512), nullable=False)
-    live_url: Mapped[str] | None = mapped_column(String(512), nullable=True)
+    docs_url: Mapped[str]  = mapped_column(String(512), nullable=False)
+    live_url: Mapped[str | None]  = mapped_column(String(512), nullable=True)
     
     # tech_stack is a Python list of strings, stored as JSON in the database
     tech_stack: Mapped[list[str]] = mapped_column(
