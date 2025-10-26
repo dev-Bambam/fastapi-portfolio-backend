@@ -1,8 +1,10 @@
 from enum import Enum
+from datetime import datetime
+from uuid import uuid4
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Text, Enum as SQLEnum, JSON, UUID
-from uuid import uuid4
+from sqlalchemy import String, Text, Enum as SQLEnum, JSON, UUID, DateTime
+
 
 from core.db import Base
 
@@ -17,7 +19,7 @@ class ProjectStatus(str, Enum):
 
 # --- 2. SQLALCHEMY ORM MODEL ---
 
-class ProjectModel(Base):
+class Project(Base):
     """
     The SQLAlchemy ORM Model defining the 'project' table structure.
     This handles all database interactions.
@@ -49,3 +51,11 @@ class ProjectModel(Base):
         default=lambda: [], # Factory function for mutable defaults
         nullable=False
     )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default= datetime.now()
+    )
+
+    def __repr__(self):
+        return f"Skill(id={self.id}, name={self.title}"
