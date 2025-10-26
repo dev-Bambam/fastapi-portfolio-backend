@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
 
-from app.profile.profile_service import get_profile_service, ProfileBase
-from app.project.project_service import (
+from src.app.profile.profile_service import get_profile_service, ProfileBase
+from src.app.project.project_service import (
     fetch_all_project,
     fetch_a_project, Project
 )
-from app.skillset.skill_service import(
+from src.app.skillset.skill_service import(
     retrieve_a_skill,
     retrieve_all_skills, SkillRead
 )
