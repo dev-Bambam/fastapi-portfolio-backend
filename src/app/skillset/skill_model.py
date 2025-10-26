@@ -9,7 +9,8 @@ class Skill(Base):
     id:Mapped[uuid4] = mapped_column(
         UUID,
         primary_key=True,
-        index=True
+        index=True,
+        default=uuid4
     )
 
     name:Mapped[str] = mapped_column(
