@@ -38,6 +38,7 @@ async def update_skill_service(db:Session, skill_id, skill_data: SkillUpdate) ->
 async def retrieve_a_skill(db:Session, skill_id):
     try:
         skill = await get_skill_by_id(db, skill_id)
+        print(f'skill:{skill}')
         if not skill:
             raise NotFoundError('skill not found')
         

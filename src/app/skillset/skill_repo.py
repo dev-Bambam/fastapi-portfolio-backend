@@ -12,10 +12,10 @@ async def create_skill(db:Session, skill_data:dict):
         return new_skill
     except SQLAlchemyError as e:
         db.rollback()
-        raise e
+        return e
     except IntegrityError as e:
         db.rollback()
-        raise e
+        return e
     
 async def update_skill(db:Session, skill_data:dict):
     try:
@@ -25,10 +25,10 @@ async def update_skill(db:Session, skill_data:dict):
         return skill_data
     except SQLAlchemyError as e:
         db.rollback()
-        raise e
+        return e
     except IntegrityError as e:
         db.rollback()
-        raise e
+        return e
     
 async def get_skills(db:Session):
     stmt = select(Skill).order_by(- Skill.created_at)
@@ -38,7 +38,9 @@ async def get_skills(db:Session):
 
 async def get_skill_by_id(db:Session, id):
     stmt = select(Skill).where(Skill.id == id)
+    print(f'db:{db}')
     skill = db.scalar(stmt)
+    
 
     return skill
 
@@ -52,4 +54,4 @@ async def delete_skill(db:Session, id) -> bool:
         return deleted_count > 0
     except SQLAlchemyError as e:
         db.rollback()
-        raise e
+        return e

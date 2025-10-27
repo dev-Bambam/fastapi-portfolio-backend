@@ -26,7 +26,7 @@ async def get_project_by_id(db:Session, id) -> Project | None :
     return project
 
 async def get_projects(db:Session) -> list[Project] | None:
-    stmt = select(Project).order_by(-Project.created_at).filter_by(not Project.is_deleted)
+    stmt = select(Project).order_by(Project.created_at.desc()).where(Project.is_deleted.is_(False))
     projects = db.scalars(stmt).all()
 
     return projects

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from uuid import UUID
 
 from src.app.profile.profile_service import get_profile_service, ProfileBase
 from src.app.project.project_service import (
@@ -22,13 +23,14 @@ async def get_all_skills(db=Depends(get_db)):
     return await retrieve_all_skills(db)
 
 @router.get('/skills/{id}', response_model=SkillRead)
-async def get_a_skill(id, db=Depends(get_db)):
-    return await retrieve_a_skill(id, db)
+async def get_a_skill(id:UUID, db=Depends(get_db)):
+    print(f'db from route:{db}')
+    return await retrieve_a_skill(db, id)
 
 @router.get('/projects', response_model=Project)
 async def get_all_project(db=Depends(get_db)):
     return await fetch_all_project(db)
 
 @router.get('/projects/{id}', response_model=Project)
-async def get_a_project(id, db=Depends(get_db)):
+async def get_a_project(id:UUID, db=Depends(get_db)):
     return await fetch_a_project(db, id)
