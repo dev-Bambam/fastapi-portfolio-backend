@@ -4,7 +4,19 @@ class Settings(BaseSettings):
     '''Loads application seeting from environmental variables'''
 
     # Databases
-    DATABASE_URL: str = 'sqlite:///./portfolio.db'
+    POSTGRES_SERVER: str
+    POSTGRES_PORT: str
+    POSTGRES_NAME: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+
+    # This property compose the full DB_URL
+    @property
+    def DATABASE_URL(self)-> str:
+        return(
+            f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@"
+            f"{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_NAME}"
+        )
 
     # JWT Authentication
     JWT_SECRETKEY: str

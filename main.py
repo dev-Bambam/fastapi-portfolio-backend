@@ -12,6 +12,13 @@ db_init()
 
 app = FastAPI()
 
+# Use the old @app.on_event("startup") for simplicity:
+@app.on_event("startup")
+async def startup_event():
+    # We call the async function using await
+    await db_init()
+
+    
 # Mount error handlers
 app.add_exception_handler(BaseError, custom_error_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
