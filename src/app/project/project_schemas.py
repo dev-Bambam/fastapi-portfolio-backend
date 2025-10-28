@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from .project_model import ProjectStatus
-from uuid import uuid4
+from uuid import UUID
 
 
 class ProjectBase(BaseModel):
@@ -21,7 +21,7 @@ class Project(ProjectBase):
     The full Project schema used for reading data out of the API.
     It includes the database-generated ID.
     """
-    id: uuid4
+    id: UUID
 
     class Config:
         # Essential for reading data from the SQLAlchemy ORM Model

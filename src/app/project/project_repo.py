@@ -20,8 +20,8 @@ async def create_project(db:Session, project_data:dict) -> Project:
         return e
     
 async def get_project_by_id(db:Session, id) -> Project | None :
-    stmt = select(Project).where(Project.id == id).filter_by(not Project.is_deleted)
-    project = db.scalars(stmt)
+    stmt = select(Project).where(Project.id == id).filter(Project.is_deleted.is_(False))
+    project = db.scalar(stmt)
 
     return project
 

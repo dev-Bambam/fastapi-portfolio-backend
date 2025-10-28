@@ -9,3 +9,6 @@ pycache/
 *.pyc
 *.o
 tests/
+
+Dockerfile
+.dockerignore

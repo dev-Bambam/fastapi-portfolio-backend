@@ -1,9 +1,9 @@
 from enum import Enum
 from datetime import datetime
-from uuid import uuid4
+from uuid import uuid4, UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Text, Enum as SQLEnum, JSON, UUID, DateTime, Boolean
+from sqlalchemy import String, Text, Enum as SQLEnum, JSON, UUID as SQL_UUID, DateTime, Boolean
 
 
 from core.db import Base
@@ -27,14 +27,14 @@ class Project(Base):
     __tablename__ = "project"
 
     # Primary Key
-    id: Mapped[uuid4] = mapped_column(UUID, primary_key=True, default=uuid4)
+    id: Mapped[UUID] = mapped_column(SQL_UUID, primary_key=True, default=uuid4)
 
     # Core fields
-    title: Mapped[str] = mapped_column(String(256), nullable=False, index=True)
+    title: Mapped[str] = mapped_column(String(256), nullable=False, index=True, unique=True)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     
     # Status uses SQLAlchemy's Enum type
-    status: Mapped[ProjectStatus] = mapped_column(
+    status: Mapped[ProjectStatus | None ] = mapped_column(
         SQLEnum(ProjectStatus), 
         default=ProjectStatus.ONGOING,
         nullable=False

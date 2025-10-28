@@ -8,7 +8,7 @@ from datetime import datetime
 class Skill(Base):
     __tablename__ = 'skill'
 
-    id:Mapped[uuid4] = mapped_column(
+    id:Mapped[UUID] = mapped_column(
         UUID,
         primary_key=True,
         index=True,

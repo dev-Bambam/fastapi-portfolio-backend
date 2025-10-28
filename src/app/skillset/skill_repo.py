@@ -31,17 +31,15 @@ async def update_skill(db:Session, skill_data:dict):
         return e
     
 async def get_skills(db:Session):
-    stmt = select(Skill).order_by(- Skill.created_at)
+    stmt = select(Skill).order_by(Skill.created_at.desc())
     skills = db.scalars(stmt).all()
-    
+    print(f'the type of skill:{type(Skill)}')
     return skills
 
 async def get_skill_by_id(db:Session, id):
     stmt = select(Skill).where(Skill.id == id)
-    print(f'db:{db}')
     skill = db.scalar(stmt)
     
-
     return skill
 
 async def delete_skill(db:Session, id) -> bool:
