@@ -7,7 +7,7 @@ from src.utils.error.error_handler import custom_error_handler, validation_excep
 from src.utils.error.errors import BaseError
 
 # Init Database
-db_init()
+# db_init()
 
 
 app = FastAPI()
