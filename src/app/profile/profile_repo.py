@@ -33,19 +33,14 @@ async def get_profile(db:AsyncSession) -> Profile | None:
     return profile
     
 async def update_profile(db:AsyncSession, profile:ProfileUpdate) -> Profile:
-    profile_to_update = await get_profile(db)
-    update_data = profile.model_dump(exclude_unset=True)
-    # Use setattr to update attributes dynamically
-    for key, value in update_data.items():
-        setattr(profile_to_update, key, value)
 
     try:
         # Commit and refresh
-        db.add(profile_to_update)
+        db.add(profile)
         await db.commit()
-        await db.refresh(profile_to_update)
+        await db.refresh(profile)
 
-        return profile_to_update
+        return profile
     except SQLAlchemyError as e:
         await db.rollback()
         raise e

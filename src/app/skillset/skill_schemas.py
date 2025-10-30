@@ -38,3 +38,6 @@ class SkillRead(SkillBase):
 
     class Config:
         from_attributes = True
+
+class DelRes(BaseModel):
+    success:bool

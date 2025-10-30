@@ -9,7 +9,7 @@ from .skill_service import (
 )
 from .skill_schemas import (
     SkillRead, SkillCreate,
-    SkillUpdate
+    SkillUpdate, DelRes
 )
 
 router = APIRouter(
@@ -32,6 +32,6 @@ async def create_skill(skill_data:SkillCreate, db=Depends(get_db)):
 async def update_skill(skill_id:UUID, skill_data:SkillUpdate, db=Depends(get_db)):
     return await update_skill_service(db, skill_id, skill_data)
 
-@router.delete('/{skill_id}', response_model=bool)
+@router.delete('/{skill_id}', response_model=DelRes)
 async def delete_skill(skill_id:UUID, db=Depends(get_db)):
     return await delete_skill_service(db, skill_id)

@@ -20,13 +20,13 @@ async def create_project(db:AsyncSession, project_data:dict) -> Project:
         raise e
     
 async def get_project_by_id(db:AsyncSession, id) -> Project | None :
-    stmt = select(Project).where(Project.id == id).filter(Project.is_deleted.is_(False))
+    stmt = select(Project).where(Project.id == id)#.filter(Project.is_deleted.is_(False))
     project = await db.scalar(stmt)
 
     return project
 
 async def get_projects(db:AsyncSession) -> list[Project] | None:
-    stmt = select(Project).order_by(Project.created_at.desc()).where(Project.is_deleted.is_(False))
+    stmt = select(Project).order_by(Project.created_at.desc())#.where(Project.is_deleted.is_(False))
     result = await db.scalars(stmt)
     projects = result.all()
 

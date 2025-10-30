@@ -1,7 +1,7 @@
 from sqlalchemy import String, JSON, Integer
 from sqlalchemy.orm import mapped_column, Mapped
 from core.db import Base
-from .profile_schemas import SocialLink
+from .profile_schemas import SocialLink, Contact
 
 class Profile(Base):
     __tablename__ = 'profile'
@@ -40,10 +40,9 @@ class Profile(Base):
         unique= True
     )
 
-    whatsapp:Mapped[str] = mapped_column(
-        String(256),
+    contact:Mapped[Contact] = mapped_column(
+        JSON,
         nullable=False,
-        unique= True
     )
 
     social_links: Mapped[list[SocialLink]] = mapped_column(

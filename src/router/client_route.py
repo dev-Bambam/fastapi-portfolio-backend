@@ -18,7 +18,7 @@ router = APIRouter(prefix='/clients', tags=['Client'])
 async def get_profile(db=Depends(get_db)):
     return await get_profile_service(db)
 
-@router.get('/skills', response_model=SkillRead)
+@router.get('/skills', response_model=list[SkillRead])
 async def get_all_skills(db=Depends(get_db)):
     return await retrieve_all_skills(db)
 
@@ -27,7 +27,7 @@ async def get_a_skill(id:UUID, db=Depends(get_db)):
     print(f'db from route:{db}')
     return await retrieve_a_skill(db, id)
 
-@router.get('/projects', response_model=Project)
+@router.get('/projects', response_model=list[Project])
 async def get_all_project(db=Depends(get_db)):
     return await fetch_all_project(db)
 
