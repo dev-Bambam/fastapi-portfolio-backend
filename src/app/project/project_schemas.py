@@ -43,3 +43,6 @@ class ProjectUpdate(BaseModel):
     docs_url: str | None = None
     live_url: str | None = None
     tech_stack: list[str] | None = None
+
+class DeleteRes(BaseModel):
+    success:bool

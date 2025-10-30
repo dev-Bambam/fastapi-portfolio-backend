@@ -6,7 +6,7 @@ from .project_service import (
 )
 from core.db import get_db
 from .project_schemas import (
-    Project, ProjectCreate, ProjectUpdate
+    Project, ProjectCreate, ProjectUpdate, DeleteRes
 )
 from uuid import UUID
 
@@ -28,6 +28,6 @@ async def read_all_project(db=Depends(get_db)):
 async def read_a_project(id:UUID, db=Depends(get_db)):
     return await fetch_a_project(db, id)
 
-@router.delete('/{id}', response_model=bool)
+@router.delete('/{id}', response_model=DeleteRes)
 async def delete_project(id:UUID, db=Depends(get_db)):
     return await delete_project_service(db, id)

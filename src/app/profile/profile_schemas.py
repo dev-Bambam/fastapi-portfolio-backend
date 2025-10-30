@@ -10,6 +10,7 @@ class ProfileBase(BaseModel):
     professional_title: str
     bio:str
     email: str
+    whatsapp:str
     social_links: list[SocialLink]
 
 class ProfileUpdate(ProfileBase):
@@ -17,6 +18,7 @@ class ProfileUpdate(ProfileBase):
     nickname: str
     professional_title: str | None = None
     email: str | None = None
+    whatsapp: str | None = None
     bio: str | None = None
     social_links: list[SocialLink]
 

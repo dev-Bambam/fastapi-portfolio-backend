@@ -26,4 +26,4 @@ EXPOSE 8000
 # We explicitly bind to 0.0.0.0 (required inside Docker) and use the correct port.
 # The --host 0.0.0.0 flag tells Uvicorn to listen on all network interfaces
 # within the container, making it accessible from outside.
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

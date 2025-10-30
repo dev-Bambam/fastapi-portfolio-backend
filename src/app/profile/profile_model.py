@@ -40,6 +40,12 @@ class Profile(Base):
         unique= True
     )
 
+    whatsapp:Mapped[str] = mapped_column(
+        String(256),
+        nullable=False,
+        unique= True
+    )
+
     social_links: Mapped[list[SocialLink]] = mapped_column(
         JSON,
         nullable=False

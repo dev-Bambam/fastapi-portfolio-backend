@@ -59,8 +59,10 @@ async def delete_project_service(db, id) ->bool:
         project_to_delete = await get_project_by_id(db, id)
         if not project_to_delete:
             raise NotFoundError('project not found')
-        is_deleted = await delete_project(project_to_delete)
-
-        return is_deleted
+        is_deleted = await delete_project(db, project=project_to_delete)
+        
+        return {
+            'success': is_deleted
+        }
     except Exception as e:
         raise SQLAlchemyError(f'{e}')

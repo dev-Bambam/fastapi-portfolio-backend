@@ -7,10 +7,10 @@ async def create_or_update_profile(db:AsyncSession, profile_data: ProfileBase) -
     existing_profile = await get_profile(db)
     if existing_profile:
         update_payload = ProfileUpdate(**profile_data.model_dump())
-        updated_profile = update_profile(db, update_payload)
+        updated_profile = await update_profile(db, update_payload)
         return updated_profile
     else:
-        new_profile = create_profile(db, profile_data)
+        new_profile = await create_profile(db, profile_data)
         return new_profile
 
 

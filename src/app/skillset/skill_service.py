@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from .skill_repo import (
     create_skill, update_skill, 
     get_skill_by_id, get_skills, 
@@ -9,7 +9,7 @@ from src.utils.error.errors import (
     SQLAlchemyError, NotFoundError
 )
 
-async def create_skill_service(db:Session, skill_data:SkillCreate) -> SkillRead:
+async def create_skill_service(db:AsyncSession, skill_data:SkillCreate) -> SkillRead:
     skill_dict = skill_data.model_dump() 
     try:
         new_skill = await create_skill(db, skill_dict)  
@@ -17,7 +17,7 @@ async def create_skill_service(db:Session, skill_data:SkillCreate) -> SkillRead:
     except Exception as e:
         raise SQLAlchemyError(detail=f'{e}')
     
-async def update_skill_service(db:Session, skill_id, skill_data: SkillUpdate) -> SkillRead:
+async def update_skill_service(db:AsyncSession, skill_id, skill_data: SkillUpdate) -> SkillRead:
     skill_dict = skill_data.model_dump(exclude_unset=True)
 
     try:
@@ -35,7 +35,7 @@ async def update_skill_service(db:Session, skill_id, skill_data: SkillUpdate) ->
     except Exception as e:
         raise SQLAlchemyError(detail=f'{e}')
     
-async def retrieve_a_skill(db:Session, skill_id):
+async def retrieve_a_skill(db:AsyncSession, skill_id):
     try:
         skill = await get_skill_by_id(db, skill_id)
         print(f'skill:{skill}')
@@ -46,7 +46,7 @@ async def retrieve_a_skill(db:Session, skill_id):
     except Exception as e:
         raise SQLAlchemyError(detail=f'{e}')
 
-async def retrieve_all_skills(db:Session) -> SkillRead:
+async def retrieve_all_skills(db:AsyncSession) -> SkillRead:
     all_skill = await get_skills(db)
 
     if not all_skill:
@@ -54,7 +54,7 @@ async def retrieve_all_skills(db:Session) -> SkillRead:
     
     return all_skill
 
-async def delete_skill_service(db:Session, skill_id):
+async def delete_skill_service(db:AsyncSession, skill_id):
     try:
         deleted = await delete_skill(db, skill_id)
         return deleted
