@@ -10,6 +10,3 @@ pycache/
 *.o
 tests/
 
-Dockerfile
-.dockerignore
-docker-compose.yml

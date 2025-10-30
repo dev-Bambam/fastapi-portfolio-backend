@@ -1,6 +1,6 @@
-from sqlalchemy.orm import Session
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession
 from .profile_model import Profile
 from .profile_schemas import (
     ProfileBase,
@@ -8,31 +8,32 @@ from .profile_schemas import (
 )
 
 
-def create_profile(db:Session, profile: ProfileBase) -> Profile:
+async def create_profile(db:AsyncSession, profile: ProfileBase) -> Profile:
     profile_dict = profile.model_dump()
     new_profile = Profile(**profile_dict)
 
     try:
         db.add(new_profile)
-        db.commit()
-        db.refresh(new_profile)
+        await db.commit()
+        await db.refresh(new_profile)
     except IntegrityError as e:
-        db.rollback()
+        await db.rollback()
         raise e
     except SQLAlchemyError as e:
-        db.rollback()
+        await db.rollback()
         raise e
     
     return new_profile
     
-def get_profile(db:Session) -> Profile | None:
+async def get_profile(db:AsyncSession) -> Profile | None:
     query = select(Profile).where(Profile.id == 1)
-    profile = db.scalar(query)
+    profile = await db.scalar(query)
+    print(f'profile:{profile}')
     
     return profile
     
-def update_profile(db:Session, profile:ProfileUpdate) -> Profile:
-    profile_to_update = get_profile(db)
+async def update_profile(db:AsyncSession, profile:ProfileUpdate) -> Profile:
+    profile_to_update = await get_profile(db)
     update_data = profile.model_dump(exclude_unset=True)
     # Use setattr to update attributes dynamically
     for key, value in update_data.items():
@@ -41,24 +42,24 @@ def update_profile(db:Session, profile:ProfileUpdate) -> Profile:
     try:
         # Commit and refresh
         db.add(profile_to_update)
-        db.commit()
-        db.refresh(profile_to_update)
+        await db.commit()
+        await db.refresh(profile_to_update)
 
         return profile_to_update
     except SQLAlchemyError as e:
-        db.rollback()
+        await db.rollback()
         raise e
 
-def delete_profile(db:Session) -> bool:
-    profile_to_delete = get_profile(db)
+async def delete_profile(db:AsyncSession) -> bool:
+    profile_to_delete = await get_profile(db)
 
     if not profile_to_delete:
         return False
     
     try:
         db.delete(profile_to_delete)
-        db.commit()
+        await db.commit()
         return True
     except SQLAlchemyError as e:
-        db.rollback()
+        await db.rollback()
         raise e

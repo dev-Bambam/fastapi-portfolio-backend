@@ -1,0 +1,12 @@
+.penv
+.env
+__pycache__/
+*.pyc
+instance/
+.pytest_cache/
+*.sqlite3
+.DS_Store
+.vscode/
+.idea/
+portfolio.db
+Dockerfile
