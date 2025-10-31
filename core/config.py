@@ -36,4 +36,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-print(f'db_url:{settings.DB_URL}')

@@ -2,6 +2,7 @@ from .project_model import Project
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from src.utils.error.errors import SQLAlchemyError as SQLAlchemyExc
 
 async def create_project(db:AsyncSession, project_data:dict) -> Project:
     new_project = Project(**project_data)
@@ -14,19 +15,19 @@ async def create_project(db:AsyncSession, project_data:dict) -> Project:
         return new_project
     except IntegrityError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     
 async def get_project_by_id(db:AsyncSession, id) -> Project | None :
-    stmt = select(Project).where(Project.id == id)#.filter(Project.is_deleted.is_(False))
+    stmt = select(Project).where(Project.id == id).filter(~Project.is_deleted)
     project = await db.scalar(stmt)
 
     return project
 
 async def get_projects(db:AsyncSession) -> list[Project] | None:
-    stmt = select(Project).order_by(Project.created_at.desc())#.where(Project.is_deleted.is_(False))
+    stmt = select(Project).order_by(Project.created_at.desc()).where(~Project.is_deleted)
     result = await db.scalars(stmt)
     projects = result.all()
 
@@ -41,10 +42,10 @@ async def update_project(db:AsyncSession, project_data:dict) -> Project:
         return project_data
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     except IntegrityError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     
 async def delete_project(db:AsyncSession, project:Project) -> bool:
     project.is_deleted = True
@@ -55,5 +56,5 @@ async def delete_project(db:AsyncSession, project:Project) -> bool:
         return True
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
 

@@ -6,6 +6,7 @@ from .profile_schemas import (
     ProfileBase,
     ProfileUpdate
 )
+from src.utils.error.errors import SQLAlchemyError as SQLAlchemyExc
 
 
 async def create_profile(db:AsyncSession, profile: ProfileBase) -> Profile:
@@ -18,10 +19,10 @@ async def create_profile(db:AsyncSession, profile: ProfileBase) -> Profile:
         await db.refresh(new_profile)
     except IntegrityError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     
     return new_profile
     
@@ -43,7 +44,7 @@ async def update_profile(db:AsyncSession, profile:ProfileUpdate) -> Profile:
         return profile
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
 
 async def delete_profile(db:AsyncSession) -> bool:
     profile_to_delete = await get_profile(db)
@@ -57,4 +58,4 @@ async def delete_profile(db:AsyncSession) -> bool:
         return True
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')

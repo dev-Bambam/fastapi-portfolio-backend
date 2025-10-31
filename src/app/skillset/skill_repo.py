@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .skill_model import Skill
 from sqlalchemy import select, delete
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from src.utils.error.errors import SQLAlchemyError as SQLAlchemyExc
 
 async def create_skill(db:AsyncSession, skill_data:dict):
     new_skill = Skill(**skill_data)
@@ -12,10 +13,10 @@ async def create_skill(db:AsyncSession, skill_data:dict):
         return new_skill
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     except IntegrityError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     
 async def update_skill(db:AsyncSession, skill_data:dict):
     try:
@@ -25,10 +26,10 @@ async def update_skill(db:AsyncSession, skill_data:dict):
         return skill_data
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     except IntegrityError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
     
 async def get_skills(db:AsyncSession):
     stmt = select(Skill).order_by(Skill.created_at.desc())
@@ -52,4 +53,4 @@ async def delete_skill(db:AsyncSession, id) -> bool:
         return deleted_count > 0
     except SQLAlchemyError as e:
         await db.rollback()
-        raise e
+        raise SQLAlchemyExc(detail=f'{e}')
