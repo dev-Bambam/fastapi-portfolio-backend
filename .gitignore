@@ -10,3 +10,5 @@ pycache/
 *.o
 tests/
 
+swagger.json
+frontend.md
