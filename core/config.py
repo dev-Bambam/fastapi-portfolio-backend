@@ -4,19 +4,21 @@ class Settings(BaseSettings):
     '''Loads application seeting from environmental variables'''
 
     # Databases
-    POSTGRES_SERVER: str
-    POSTGRES_PORT: str
-    POSTGRES_NAME: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
+    # POSTGRES_SERVER: str
+    # POSTGRES_PORT: str
+    # POSTGRES_NAME: str
+    # POSTGRES_USER: str
+    # POSTGRES_PASSWORD: str
+    DB_URL:str
+    
 
     # This property compose the full DB_URL
-    @property
-    def DATABASE_URL(self)-> str:
-        return(
-            f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@"
-            f"{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_NAME}"
-        )
+    # @property
+    # def DATABASE_URL(self)-> str:
+    #     return(
+    #         f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@"
+    #         f"{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_NAME}"
+    #     )
 
     # JWT Authentication
     JWT_SECRETKEY: str
@@ -34,3 +36,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+print(f'db_url:{settings.DB_URL}')

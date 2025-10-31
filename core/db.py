@@ -1,15 +1,16 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import declarative_base
+import socket
 
 # Import the settings from the new config file
 from .config import settings 
 
 # 1. Create the ASYNCHRONOUS Engine
 engine = create_async_engine(
-    settings.DATABASE_URL, 
+    settings.DB_URL, 
     echo=False,
     pool_size=10, 
-    max_overflow=20
+    max_overflow=20,
 )
 
 # 2. Create the Asynchronous Session Local
