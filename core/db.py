@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import declarative_base
-import socket
+
 
 # Import the settings from the new config file
 from .config import settings 
@@ -9,8 +9,18 @@ from .config import settings
 engine = create_async_engine(
     settings.DB_URL, 
     echo=False,
-    pool_size=10, 
-    max_overflow=20,
+    # === CRITICAL ADDITIONS FOR PGBOUNCER / SUPABASE ===
+    
+    # 1. Recycle connections every 280 seconds (4m 40s) 
+    #    to beat the common 5-minute server idle timeout.
+    pool_recycle=280, 
+    
+    # 2. Add a quick test query on checkout to confirm the connection is alive.
+    pool_pre_ping=True, 
+    
+    # Optional: Adjust pool size if you have many concurrent users
+    pool_size=15, 
+    max_overflow=5
 )
 
 # 2. Create the Asynchronous Session Local
