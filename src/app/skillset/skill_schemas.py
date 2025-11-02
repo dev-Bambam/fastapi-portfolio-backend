@@ -1,6 +1,17 @@
 from pydantic import BaseModel, Field
 from uuid import UUID
 from datetime import datetime
+from enum import Enum
+
+class SkillCategory(str, Enum):
+    Backend_Development = 'Backend Development'
+    AI_Engineering = 'AI Engineering'
+    Cloud_DevOps = 'Cloud & DevOps'
+    Programming_Language = 'Programming Langugage'
+    DEvelopment_Tools = 'Development Tools'
+    Web_Technologies = 'Web Technologies'
+
+
 
 class SkillBase(BaseModel):
     name: str = Field(
@@ -17,7 +28,7 @@ class SkillBase(BaseModel):
         description='Proficiency level (1=Beginner, 5=Expert)'
     )
 
-    category: str | None = Field(
+    category: SkillCategory | None = Field(
         None,
         max_length=64,
         description='Optional grouping category'
