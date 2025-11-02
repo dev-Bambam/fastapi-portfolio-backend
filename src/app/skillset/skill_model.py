@@ -21,11 +21,6 @@ class Skill(Base):
         unique=True
     )
 
-    level:Mapped[int] = mapped_column(
-        Integer,
-        nullable=False
-    )
-
     category: Mapped[str | None] = mapped_column(
         String(64),
         nullable=True

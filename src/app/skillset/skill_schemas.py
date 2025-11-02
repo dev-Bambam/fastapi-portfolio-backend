@@ -21,13 +21,6 @@ class SkillBase(BaseModel):
         description='The name of the skill'
     )
 
-    level: int = Field(
-        ...,
-        ge=1,
-        le=5,
-        description='Proficiency level (1=Beginner, 5=Expert)'
-    )
-
     category: SkillCategory | None = Field(
         None,
         max_length=64,
@@ -39,9 +32,7 @@ class SkillCreate(SkillBase):
 
 class SkillUpdate(BaseModel):
     name: str | None =Field(None, min_length=2, max_length=128)
-
-    level: int | None = Field(None, ge=1, le=5)
-    category: str|None = Field(None, max_length=64)
+    category: SkillCategory | None = Field(None, max_length=64)
 
 class SkillRead(SkillBase):
     id: UUID
