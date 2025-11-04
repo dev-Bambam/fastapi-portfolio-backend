@@ -12,3 +12,4 @@ tests/
 
 swagger.json
 frontend.md
+example.env
