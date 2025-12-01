@@ -20,7 +20,8 @@ async def startup_event():
     await db_init()
 
 origins = [
-    "https://dev-bambam.github.io"
+    "https://dev-bambam.github.io",
+    '*'
 ]
 
 app.add_middleware(
