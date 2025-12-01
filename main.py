@@ -20,10 +20,7 @@ async def startup_event():
     await db_init()
 
 origins = [
-    "*",  # CRITICAL: Allows ALL origins (domains) to access the API. Use this for testing/development.
-    # In a production environment, you should replace "*" with a specific URL:
-    # "https://www.your-frontend-domain.com", 
-    # "http://localhost:8000", 
+    "https://dev-bambam.github.io"
 ]
 
 app.add_middleware(
